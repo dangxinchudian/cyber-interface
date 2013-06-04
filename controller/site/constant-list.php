@@ -38,6 +38,7 @@
 			$available = round(($wholeTime - $result[$key]['fault_time']) / $wholeTime, 4) * 100;
 		}
 		$result[$key]['available'] = $available;
+		$result[$key]['keey_day'] = (int)(($stop_time-$start_time)/(24*3600));
 
 	}
 	$array = array(
