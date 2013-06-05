@@ -88,8 +88,7 @@ function check($site_id){
 	if($rule['day_mail_max'] != 0 && $day['count(time)'] >= $rule['day_mail_max']){		//不发送告警
 		//return false;
 	}else{
-		if($rule['notice_mail'] == 1) $mailResult = send_mail($rule['mail'], "{$rule['domain']}正在遭受攻击", "正在遭受攻击");
-		var_dump($mailResult);
+		if($rule['notice_mail'] == 1) send_mail($rule['mail'], "{$rule['domain']}正在遭受攻击", "正在遭受攻击");
 	}
 
 	if($rule['day_mobile_max'] != 0 && $day['count(time)'] >= $rule['day_mobile_max']){		//不发送告警
