@@ -23,7 +23,7 @@ function check($site_id){
 	$stop_time = date('Y-m-d H:i:s');
 	$start_time = date('Y-m-d H:i:s', time() - $rule['keep_time']);
 	$sql = "SELECT count(client_ip) as count FROM mosite_{$site_id}.attack_log WHERE time >= '{$start_time}' AND time <= '{$stop_time}'";
-	$result = $attackModel->db()->query($sql, 'row');
+	$result = $db->query($sql, 'row');
 
 	$attack_count = $result['count'];
 	$alarm = true;
@@ -31,7 +31,7 @@ function check($site_id){
 
 	//检查最近的notice_limit条告警
 	$sql = "SELECT time,status FROM alarm WHERE type = 'attack' AND site_id = '{$site_id}' ORDER BY time DESC LIMIT 0,{$rule['notice_limit']}";
-	$recent = $attackModel->db()->query($sql, 'array');
+	$recent = $db->query($sql, 'array');
 	$warning = 0;
 	foreach ($recent as $value) if($value['status'] == 'warning') $warning++;
 
