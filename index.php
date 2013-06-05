@@ -3,8 +3,8 @@
 
 date_default_timezone_set('PRC');
 
-// preg_match('/\/cyber-interface\/(.+)$/', $_SERVER['REQUEST_URI'], $match);
-preg_match('/\/interface\/(.+)$/', $_SERVER['REQUEST_URI'], $match);
+preg_match('/\/cyber-interface\/(.+)$/', $_SERVER['REQUEST_URI'], $match);
+// preg_match('/\/interface\/(.+)$/', $_SERVER['REQUEST_URI'], $match);
 //preg_match('/\/data\/(.+)$/', $_SERVER['REQUEST_URI'], $match);
 $uri = (empty($match)) ? 'default' : $match[1];
 

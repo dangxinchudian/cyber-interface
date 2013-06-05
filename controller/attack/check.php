@@ -5,6 +5,9 @@ date_default_timezone_set('PRC');
 $site_id = $matches[1];
 
 $attackModel = model('attack');
+$siteModel = model('site');
+$info = $siteModel->get($site_id);
+if(empty($info)) exit('站点不存在');
 
 // require('../database.php');
 // $db = new database;
@@ -74,11 +77,11 @@ if(!$alarm){
 }
 
 //告警已达单次上限
-if($warning == $rule['notice_limit']) exit('到达上限');
+if($warning == $rule['notice_limit']) exit('达到上限');
 
 //检查冷却时间
 if(count($recent) > 0 && $recent[0]['status'] == 'warning'){
-	if($recent[0]['time'] + $rule['cool_down_time'] > time()) exit('未冷却'); //未冷却
+	if(strtotime($recent[0]['time']) + $rule['cool_down_time'] > time()) exit('未冷却'); //未冷却
 }
 
 //检查今天发送条数
