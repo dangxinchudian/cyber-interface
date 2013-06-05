@@ -40,9 +40,9 @@ function check($site_id){
 		if(count($recent) > 0 && $recent[0]['status'] == 'normal') return '全部已闭合';
 		if(count($recent) == 0) return '不需要闭合';
 		else{       //发送正常告警
-			if($rule['notice_mail'] == 1) send_mail($rule['mail'], "{$rule['domain']}恢复正常", "恢复正常");
+			if($rule['notice_mail'] == 1) send_mail($rule['mail'], "{$rule['domain']}攻击威胁已解除", "攻击威胁已解除");
 			if($rule['notice_mobile'] == 1 && !empty($rule['mobile'])){
-				send_sms($rule['mobile'], "{$rule['domain']}恢复正常");
+				send_sms($rule['mobile'], "{$rule['domain']}攻击威胁已解除");
 			}
 			$time = date('Y-m-d H:i:s');
 			$sql = "INSERT INTO alarm
@@ -88,7 +88,8 @@ function check($site_id){
 	if($rule['day_mail_max'] != 0 && $day['count(time)'] >= $rule['day_mail_max']){		//不发送告警
 		//return false;
 	}else{
-		if($rule['notice_mail'] == 1) send_mail($rule['mail'], "{$rule['domain']}正在遭受攻击", "正在遭受攻击");
+		if($rule['notice_mail'] == 1) $mailResult = send_mail($rule['mail'], "{$rule['domain']}正在遭受攻击", "正在遭受攻击");
+		var_dump($mailResult);
 	}
 
 	if($rule['day_mobile_max'] != 0 && $day['count(time)'] >= $rule['day_mobile_max']){		//不发送告警
