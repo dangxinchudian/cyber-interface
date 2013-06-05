@@ -3,7 +3,7 @@
 
 date_default_timezone_set('PRC');
 
-preg_match('/\/interface\/(.+)$/', $_SERVER['REQUEST_URI'], $match);
+preg_match('/\/cyber-interface\/(.+)$/', $_SERVER['REQUEST_URI'], $match);
 //preg_match('/\/data\/(.+)$/', $_SERVER['REQUEST_URI'], $match);
 $uri = (empty($match)) ? 'default' : $match[1];
 
@@ -124,6 +124,7 @@ router('site-aws-action-location-zh',function(){ require('./controller/aws/locat
 router('site-aws-action-browser',function(){ require('./controller/aws/browser.php'); });
 router('site-aws-action-get',function(){ require('./controller/aws/get.php'); });
 
+router('site-attack-check:([0-9]{1,9})',function($matches){ require('./controller/attack/check.php'); });
 router('site-attack-get',function(){ require('./controller/attack/get.php'); });
 router('site-attack-ip',function(){ require('./controller/attack/ip.php'); });
 router('site-attack-location-zh',function(){ require('./controller/attack/location-zh.php'); });

@@ -222,7 +222,8 @@ function alarm($site_id, $http_code){
 		}
 	}
 
-	$http_code = $http_code.' '.errorHeader($http_code);
+	$http_code = errorHeader($http_code);
+	// $http_code = $http_code.' '.errorHeader($http_code);
 	$time = date('Y-m-d H:i:s');
 	$sql = "INSERT INTO alarm
 		(
