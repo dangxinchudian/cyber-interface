@@ -196,7 +196,7 @@ function alarm($site_id, $http_code){
 
 	//检查冷却时间
 	if(count($recent) > 0 && $recent[0]['status'] == 'warning'){
-		if($recent[0]['time'] + $rule['cool_down_time'] > time()) return false; //未冷却
+		if(strtotime($recent[0]['time']) + $rule['cool_down_time'] > time()) return false; //未冷却
 	}
 
 	//不能被200触发
