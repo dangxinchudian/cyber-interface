@@ -2,10 +2,10 @@
 
 class database {
 	// private $dbHost = '115.28.34.205';
-	private $dbHost = '121.199.31.76';
+	private $dbHost = '121.199.10.84';
 	private $dbName = 'monitor';
 	private $dbUser = 'root';
-	private $dbPass = 'zooboa.com';
+	private $dbPass = 'cyber_zooboa';
 	private $dbObj = false;
 
 	function __construct(){
