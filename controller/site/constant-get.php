@@ -37,6 +37,9 @@
 		$info['server'] = $serverModel->get($info['server_id']);
 	}
 
+	// if($info['fault_time'] > $info['keep_watch_time']) $info['fault_time'] = $info['keep_watch_time'];
+	$info['keep_watch_time'] = time() - $info['creat_time'];
+
 	json(true, $info);
 
 
