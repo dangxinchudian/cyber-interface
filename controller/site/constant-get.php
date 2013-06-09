@@ -24,6 +24,9 @@
 	if($info['remove'] > 0) json(false, '站点已经被移除');
 	if(!$admin) if($info['user_id'] != $user_id) json(false, '不允许操作他人站点');
 
+	//time 修正
+	$info['keep_watch_time'] = time() - $info['creat_time'];
+
 	if($stop_time != null && $start_time != null){
 		if($stop_time < $start_time) json(false, 'time error!');
 		$constantModel = model('constant');
@@ -37,10 +40,6 @@
 		$serverModel = model('server');
 		$info['server'] = $serverModel->get($info['server_id']);
 	}
-
-
-	//time 修正
-	$info['keep_watch_time'] = time() - $info['creat_time'];
 
 	json(true, $info);
 
