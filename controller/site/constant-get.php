@@ -6,13 +6,13 @@
 	});
 	$admin = $user->adminCheck();
 
-	$site_id = filter('site_id', '/^[0-9]{1,9}$/', 'siteID格式错误');
-	$start_time = filter('start_time', '/^[0-9]{1,10}$/', '起始时间单位错误', true);
-	$stop_time = filter('stop_time', '/^[0-9]{1,10}$/', '结束时间单位错误', true);
+	// $site_id = filter('site_id', '/^[0-9]{1,9}$/', 'siteID格式错误');
+	// $start_time = filter('start_time', '/^[0-9]{1,10}$/', '起始时间单位错误', true);
+	// $stop_time = filter('stop_time', '/^[0-9]{1,10}$/', '结束时间单位错误', true);
 
-	/*$site_id = 0;
+	$site_id = 5;
 	$start_time = time() - 60 * 60 * 24 * 5;
-	$stop_time = time();*/
+	$stop_time = time();
 
 	$siteModel = model('site');
 	if($site_id == 0){
@@ -38,6 +38,8 @@
 	}
 
 	// if($info['fault_time'] > $info['keep_watch_time']) $info['fault_time'] = $info['keep_watch_time'];
+
+	//time 修正
 	$info['keep_watch_time'] = time() - $info['creat_time'];
 
 	json(true, $info);
