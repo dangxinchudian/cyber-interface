@@ -12,10 +12,11 @@
 	$start_time = filter('start_time', '/^[0-9]{1,10}$/', '起始时间单位错误');
 	$stop_time = filter('stop_time', '/^[0-9]{1,10}$/', '结束时间单位错误');
 
-	/*$page = 1;
-	$limit = 10;
-	$start_time = time() - 60 * 60 * 24 * 5;
-	$stop_time = time();*/
+	// $page = 1;
+	// $limit = 10;
+	// $start_time = time() - 260935;
+	// // echo $start_time;
+	// $stop_time = time();
 
 	if($limit <= 0) $limit = 1;
 	if($page < 1) $page = 1;
@@ -37,8 +38,10 @@
 		if($wholeTime <= 0){
 			$available = 0;
 		}else{
+			if($result[$key]['fault_time'] > $wholeTime) $result[$key]['fault_time'] = $wholeTime;
 			$available = round(($wholeTime - $result[$key]['fault_time']) / $wholeTime, 4) * 100;
 		}
+		$result[$key]['wholeTime'] = $wholeTime;
 		$result[$key]['available'] = $available;
 		$result[$key]['keey_day'] = (int)(($stop_time-$start_time)/(24*3600));
 
