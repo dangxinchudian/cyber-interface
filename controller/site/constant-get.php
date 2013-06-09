@@ -30,6 +30,7 @@
 		$info['fault_time'] = $constantModel->table_fault_time($info['site_id'], $start_time, $stop_time, $info['period'], 0);		//临时替代
 		$info['available'] = $constantModel->available($info['site_id'], $start_time, $stop_time);
 		$info['fault_count'] = $constantModel->faultCount($info['site_id'], $start_time, $stop_time);
+		if($info['fault_time'] > $info['keep_watch_time']) $info['fault_time'] = $info['keep_watch_time'];
 	}
 
 	if($info['server_id'] != 0){
@@ -40,8 +41,6 @@
 
 	//time 修正
 	$info['keep_watch_time'] = time() - $info['creat_time'];
-
-	if($info['fault_time'] > $info['keep_watch_time']) $info['fault_time'] = $info['keep_watch_time'];
 
 	json(true, $info);
 
