@@ -128,6 +128,7 @@ function httpHeader($url, $port = 80){
 	curl_setopt($curl, CURLOPT_TIMEOUT, $timeOut);
 	curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
 	//curl_setopt($curl, CURLOPT_NOBODY, true);
+	curl_setopt($curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
 	curl_exec($curl);
 
@@ -136,7 +137,8 @@ function httpHeader($url, $port = 80){
 	$result = array(
 		'code' => $curlinfo['http_code'],
 		'status' => errorHeader($curlinfo['http_code']),
-		'time' => $curlinfo['total_time']
+		'time' => $curlinfo['total_time'],
+		'info' => $curlinfo
 	);
 	return $result;
 }
@@ -199,10 +201,13 @@ function rolling_curl($urls, $callback, $body = true){
         $ch = curl_init();
  
         curl_setopt($ch, CURLOPT_URL, $url['url']);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_NOSIGNAL, true);
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+
+
         if($body === false) curl_setopt($ch, CURLOPT_NOBODY, 1);
         if(isset($url['port']))curl_setopt($ch, CURLOPT_PORT, $url['port']);
  

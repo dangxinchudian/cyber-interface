@@ -5,7 +5,7 @@
 function httpHeader($url, $port = 80){
 
 	$curl = curl_init();
-	$timeOut = 5;
+	$timeOut = 30;
 	$userAgent = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5';
 
 	curl_setopt($curl, CURLOPT_URL, $url);
@@ -16,6 +16,7 @@ function httpHeader($url, $port = 80){
 	curl_setopt($curl, CURLOPT_TIMEOUT, $timeOut);
 	curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
 	curl_setopt($curl, CURLOPT_NOBODY, true);
+	curl_setopt($curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
 	$a = curl_exec($curl);
 	//echo $a;

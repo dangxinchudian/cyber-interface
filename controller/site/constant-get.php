@@ -27,7 +27,7 @@
 	if($stop_time != null && $start_time != null){
 		if($stop_time < $start_time) json(false, 'time error!');
 		$constantModel = model('constant');
-		$info['fault_time'] = $constantModel->log_fault_time($info['site_id'], $start_time, $stop_time, $info['period'], 0);		//临时替代
+		$info['fault_time'] = $constantModel->table_fault_time($info['site_id'], $start_time, $stop_time, $info['period'], 0);		//临时替代
 		$info['available'] = $constantModel->available($info['site_id'], $start_time, $stop_time);
 		$info['fault_count'] = $constantModel->faultCount($info['site_id'], $start_time, $stop_time);
 	}

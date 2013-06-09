@@ -20,7 +20,22 @@ $callback = function($data, $info, $self){
 		if(!$remote) return false;
 		$time = $remote['time'];
 		$info = array_merge($info, $remote);
+	}else{	//执行插入前的复查
+		if($info['http_code'] != 200){
+			echo "{$info['url']} 执行插入前复查\n";
+
+			//再次检查
+			for($i = 0; $i < 2; $i++){
+				$result = httpHeader($self['url'], $self['port']);
+				echo "插入前复查结果为{$result['code']}[{$result['time']}]\n";
+				if($result['code'] == 200) break;      //若为200直接退出
+			}
+
+			$info = array_merge($info, $result['info']);
+		}
 	}
+	// echo "[{$self['node_id']}]{$info['url']}:{$info['total_time']}\n";
+	
 	$sql = "INSERT INTO {$database}.constant_log 
 	(
 		id, 
@@ -84,29 +99,36 @@ $callback = function($data, $info, $self){
 
 		//$fault_id
 		if($info['http_code'] != 200){      //开启故障，持续故障
-		if(empty($fault)){      //开启故障
 
-			//再次检查
-			for($i = 0; $i < 2; $i++){
-			$result = httpHeader($self['url'], $self['port']);
-			if($result['code'] == 200) return;      //若为200直接退出
+			if(empty($fault)){      //开启故障
+				echo "{$info['url']} 准备开启故障\n";
+
+				//再次检查
+				for($i = 0; $i < 2; $i++){
+					$result = httpHeader($self['url'], $self['port']);
+					echo "复检结果为{$result['code']}[{$result['time']}]\n";
+					if($result['code'] == 200) return;      //若为200直接退出
+				}
+				echo "{$info['url']} 故障检查无误\n";
+
+				$insertArray = array(
+				'time' => date('Y-m-d H:i:s'),
+				'keep_time' => $self['period'],
+				'user_id' => $self['user_id'],
+				'site_id' => $self['site_id'],
+				'http_code' => $info['http_code']
+				);
+
+				//print_r($info);
+				$result = $db->insert('constant_fault', $insertArray);
+
+			}else{      //持续故障时间累加
+				echo "{$info['url']} 持续故障\n";
+
+				$sql = "UPDATE constant_fault SET keep_time = keep_time + {$self['period']} WHERE id = '{$fault['id']}'";
+				$db->query($sql, 'exec');
 			}
 
-			$insertArray = array(
-			'time' => date('Y-m-d H:i:s'),
-			'keep_time' => $self['period'],
-			'user_id' => $self['user_id'],
-			'site_id' => $self['site_id'],
-			'http_code' => $info['http_code']
-			);
-
-			//print_r($info);
-			$result = $db->insert('constant_fault', $insertArray);
-
-		}else{      //持续故障时间累加
-			$sql = "UPDATE constant_fault SET keep_time = keep_time + {$self['period']} WHERE id = '{$fault['id']}'";
-			$db->query($sql, 'exec');
-		}
 		}else{   //闭合故障
 			if(!empty($fault)){
 				$updateArray = array('status' => 'slove');
@@ -257,7 +279,7 @@ for(;;){
     $node = $db->query($sql, 'array');
 
     //url-list
-    $sql = "SELECT user_id,site_id,domain,path,port,last_watch_time,period FROM monitor.site WHERE last_watch_time + period < $time  AND remove = '0' AND constant_status = '1'";
+    $sql = "SELECT user_id,site_id,domain,path,port,last_watch_time,period FROM monitor.site WHERE last_watch_time + period < $time  AND remove = '0' AND constant_status = '1' LIMIT 0,10";
     $result = $db->query($sql, 'array');
 
     $urls = array();
@@ -272,6 +294,7 @@ for(;;){
             'user_id' => $value['user_id']
         );
     }
+    echo "local task creat\n";
     $local = rolling_curl($urls, $callback, false);
 
     foreach ($node as $nodekey => $nodevalue) {
@@ -288,6 +311,7 @@ for(;;){
                 'user_id' => $value['user_id']
             );
         }
+        echo "{$nodevalue['constant_node_id']} task creat\n";
         $node[$nodekey]['count'] = rolling_curl($urls, $callback, true);
     }
 
@@ -296,7 +320,7 @@ for(;;){
     foreach($node as $key => $value) $print .= " {$value['name']}[{$value['count']}]";
 
     echo "{$print}\n";
-    sleep(20);
+    sleep(1);
 }
 
 //print_r($a);
