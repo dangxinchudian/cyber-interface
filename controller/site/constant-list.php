@@ -31,6 +31,8 @@
 //		$result[$key]['available'] = $constantModel->available($value['site_id'], $start_time, $stop_time);
 		$result[$key]['fault_time'] = $constantModel->table_fault_time($value['site_id'], $start_time, $stop_time);
 		// $result[$key]['available'] = $constantModel->available_time($value['site_id'], $start_time, $stop_time);
+
+		if($value['creat_time'] > $start_time) $start_time = $value['creat_time'];
 		$wholeTime = $stop_time - $start_time;
 		if($wholeTime <= 0){
 			$available = 0;
