@@ -15,6 +15,10 @@ $start_time = time() - 3600 *24 *50;
 $stop_time = time();
 
 $siteModel = model('site');
+$constantModel = model('constant');
+$awsModel = model('aws');
+$attackModel = model('attack');
+
 $site_list = explode(',', $site_id);
 $site = array();
 foreach ($site_list as $key => $value) {
@@ -23,10 +27,42 @@ foreach ($site_list as $key => $value) {
 	if(empty($info)) continue;//json(false, '站点不存在');
 	if($info['remove'] > 0) continue;//json(false, '站点已经被移除');
 	if(!$admin) if($info['user_id'] != $user_id) continue; //json(false, '你没有权限操作该站点');
+
+	$http = $awsModel->summary($site_id, $start_time, $stop_time);
+	$info['hits'] = (isset($http['hits'])) ? $http['hits'] : 0;
+	$info['visits'] = (isset($http['visits'])) ? $http['visits'] : 0;
+	$info['bandwidth'] = (isset($http['bandwidth'])) ? $http['bandwidth'] : 0;
+	$info['attack_ip'] = $attackModel->ip_count($site_id, $start_time, $stop_time);
+	$info['attack_total'] = $attackModel->total_count($site_id, $start_time, $stop_time);
+	$info['percent'] = 0;
+	if($info['hits'] != 0) $info['percent'] = round($info['attack_total'] / $info['hits'] * 100, 2);
+	if($info['percent'] > 100) $info['percent'] = 100;
+
 	$site[$site_id] = $info;
 }
 
-print_r($site);
+foreach ($site as $key => $value) {
+	$site[$key]['info']['fault_time'] = $constantModel->table_fault_time($value['site_id'], $start_time, $stop_time);
+
+	if($value['creat_time'] > $start_time) $start_time = $value['creat_time'];
+	$wholeTime = $stop_time - $start_time;
+	if($wholeTime <= 0){
+		$available = 0;
+	}else{
+		if($site[$key]['info']['fault_time'] > $wholeTime) $site[$key]['info']['fault_time'] = $wholeTime;
+		$available = round(($wholeTime - $site[$key]['info']['fault_time']) / $wholeTime, 4) * 100;
+	}
+	$site[$key]['info']['wholeTime'] = $wholeTime;
+	$site[$key]['info']['available'] = $available;
+	$site[$key]['info']['keey_day'] = (int)(($stop_time-$start_time)/(24*3600));
+	$site[$key]['info']['work'] = $constantModel->nowFault($value['site_id']);
+
+}
+
+// print_r($site);
+
+require('./report/html.php');
+// print_r($site);
 
 
 ?>

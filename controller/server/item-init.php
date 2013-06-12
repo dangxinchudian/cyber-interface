@@ -117,7 +117,7 @@
 	}
 
 	$result = $serverModel->addWatch($server_id, $item_id, $item['table_name'], $info['user_id']);
-	if($result > 0) json(true, '初始化成功');
+	if($result > 0) json(true, $result);
 	json(false, '初始化失败');
 
 
