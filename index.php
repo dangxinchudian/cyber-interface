@@ -103,6 +103,7 @@ router('site-server',function(){ require('./controller/site/server.php'); });
 // router('site-report',function(){ require('./controller/site/report.php'); });
 
 router('export-pdf',function(){ require('./export/pdf.php'); });
+router('export-html',function(){ require('./export/html.php'); });
 
 router('site-constant-list',function(){ require('./controller/site/constant-list.php'); });
 router('site-constant-active',function(){ require('./controller/site/constant-active.php'); });

@@ -119,6 +119,14 @@ class constant extends model{
 		return $result;	
 	}
 
+	public function nowFault($site_id){
+		$sql = "SELECT status FROM constant_fault WHERE site_id = '{$site_id}' ORDER BY time DESC LIMIT 0,1";
+		$dbResult = $this->db()->query($sql, 'row');
+		if(empty($dbResult)) return true;
+		if($dbResult['status'] == 'slove') return true;
+		return false;
+	}
+
 
 }
 ?>

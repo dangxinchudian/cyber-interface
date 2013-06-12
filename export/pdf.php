@@ -6,13 +6,13 @@ $user_id = $user->sessionCheck(function(){
 });
 $admin = $user->adminCheck();
 
-// $site_id = filter('site_id', '/^[0-9]{1,9}$/', 'site_id格式错误');
-// $start_time = filter('start_time', '/^[0-9]{1,10}$/', '起始时间单位错误');
-// $stop_time = filter('stop_time', '/^[0-9]{1,10}$/', '结束时间单位错误');
+$site_id = filter('site_id', '/^[0-9]{1,9}$/', 'site_id格式错误');
+$start_time = filter('start_time', '/^[0-9]{1,10}$/', '起始时间单位错误');
+$stop_time = filter('stop_time', '/^[0-9]{1,10}$/', '结束时间单位错误');
 
-$site_id = 3;
-$start_time = time() - 3600 *24 *50;
-$stop_time = time();
+// $site_id = 3;
+// $start_time = time() - 3600 *24 *50;
+// $stop_time = time();
 
 $siteModel = model('site');
 $info = $siteModel->get($site_id);

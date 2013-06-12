@@ -31,7 +31,8 @@
 		//后续升级日志加入每次间隔时间，可以使故障时间更精确
 		$node[$key]['keep_watch_time'] = $constantModel->log_work_time($info['site_id'], $start_time, $stop_time, $info['period'], $value['constant_node_id']);
 		$node[$key]['fault_time'] = $constantModel->log_fault_time($info['site_id'], $start_time, $stop_time, $info['period'], $value['constant_node_id']);
-		$node[$key]['available'] = 100 - round($node[$key]['fault_time'] / $node[$key]['keep_watch_time'] * 100, 2);
+		if($node[$key]['keep_watch_time'] != 0) $node[$key]['available'] = 100 - round($node[$key]['fault_time'] / $node[$key]['keep_watch_time'] * 100, 2);
+		else $node[$key]['available'] = 100;
 		$node[$key]['last'] = $constantModel->get_last($info['site_id'], $value['constant_node_id']);
 		if(!empty($node[$key]['last'])) $node[$key]['last']['msg'] = errorHeader($node[$key]['last']['status']);
 

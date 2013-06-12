@@ -44,6 +44,7 @@
 		$result[$key]['wholeTime'] = $wholeTime;
 		$result[$key]['available'] = $available;
 		$result[$key]['keey_day'] = (int)(($stop_time-$start_time)/(24*3600));
+		$result[$key]['work'] = $constantModel->nowFault($value['site_id']);
 
 	}
 	$array = array(
