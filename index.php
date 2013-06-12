@@ -95,6 +95,7 @@ router('summary-attack-mode',function(){ require('./controller/summary/attack-mo
 router('summary-attack-location',function(){ require('./controller/summary/attack-location.php'); });
 router('summary-constant-fault',function(){ require('./controller/summary/constant-fault.php'); });
 router('summary-report',function(){ require('./controller/summary/report.php'); });
+router('summary-constant',function(){ require('./controller/summary/constant.php'); });
 
 router('site-add',function(){ require('./controller/site/add.php'); });
 router('site-remove',function(){ require('./controller/site/remove.php'); });
