@@ -21,6 +21,28 @@
 	</h3>
 	<br/>
 	<h2 style="text-align:center;display:block;">1.概况</h2>
+	<table border="0">
+		<tr style="background:#EEE;">
+			<th>全部监控站点</th>
+			<th>正常站点</th>
+			<th>故障站点</th>
+		</tr>
+		<tr>
+			<td><?php echo $summary['total']; ?></td>
+			<td><?php echo $summary['work']; ?></td>
+			<td><?php echo $summary['unwork']; ?></td>
+		</tr>
+		<tr style="background:#EEE;">
+			<th>访问总量</th>
+			<th>攻击总量</th>
+			<th>攻击占比</th>
+		</tr>
+		<tr>
+			<td><?php echo $summary['hits']; ?></td>
+			<td><?php echo $summary['attack_total']; ?></td>
+			<td><?php echo $summary['percent']; ?>%</td>
+		</tr>
+	</table>
 	<br/>
 	<h2 style="text-align:center;display:block;">2.网站详细</h2>
 	<table border="0">
@@ -46,21 +68,28 @@
 				<td><?php echo $value['info']['available']; ?>%</td>
 			</tr>	
 		<?php } ?>
-<!-- 		<tr>
-			<td colspan="4" style="background:#EEE;">统计</td>
-		</tr>
-		<tr>
-			<td colspan="2">总故障时间</td>
-			<td colspan="2">平均可用率</td>
-		</tr>
-		<tr>
-			<td colspan="2">1032秒</td>
-			<td colspan="2">99.5%</td>
-		</tr>	 -->
 	</table>
 	<br/>
-	<h2 style="text-align:center;display:block;">3.攻击统计</h2>
-	<br/>
-	<h2 style="text-align:center;display:block;">4.故障历史</h2>
+<!-- 	<h2 style="text-align:center;display:block;">3.攻击统计</h2>
+	<br/> -->
+	<h2 style="text-align:center;display:block;">3.故障历史</h2>
+	<table border="0">
+		<tr style="background:#EEE;">
+			<th>站点</th>
+			<th>开始时间</th>
+			<th>恢复时间</th>
+			<th>故障持续时间</th>
+			<th>故障原因</th>
+		</tr>
+		<?php foreach ($fault['list'] as $key => $value) { ?>
+			<tr>
+				<td><?php echo $site[$value['site_id']]['custom_name']; ?></td>
+				<td><?php echo $value['time']; ?></td>
+				<td><?php echo $value['end_time']; ?></td>
+				<td><?php echo $value['keep_time']; ?>秒</td>
+				<td><?php echo $value['msg']; ?></td>
+			</tr>	
+		<?php } ?>
+	</table>
 </body>
 </html>

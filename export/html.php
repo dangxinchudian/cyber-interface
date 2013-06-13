@@ -6,13 +6,13 @@ $user_id = $user->sessionCheck(function(){
 });
 $admin = $user->adminCheck();
 
-// $site_id = filter('site_id', '/^[0-9\,]{1,500}$/', 'site_id格式错误');
-// $start_time = filter('start_time', '/^[0-9]{1,10}$/', '起始时间单位错误');
-// $stop_time = filter('stop_time', '/^[0-9]{1,10}$/', '结束时间单位错误');
+$site_id = filter('site_id', '/^[0-9\,]{1,500}$/', 'site_id格式错误');
+$start_time = filter('start_time', '/^[0-9]{1,10}$/', '起始时间单位错误');
+$stop_time = filter('stop_time', '/^[0-9]{1,10}$/', '结束时间单位错误');
 
-$site_id = '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
-$start_time = time() - 3600 *24 *50;
-$stop_time = time();
+// $site_id = '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
+// $start_time = time() - 3600 *24 *50;
+// $stop_time = time();
 
 $siteModel = model('site');
 $constantModel = model('constant');
@@ -41,6 +41,7 @@ foreach ($site_list as $key => $value) {
 	$site[$site_id] = $info;
 }
 
+
 foreach ($site as $key => $value) {
 	$site[$key]['info']['fault_time'] = $constantModel->table_fault_time($value['site_id'], $start_time, $stop_time);
 
@@ -59,6 +60,27 @@ foreach ($site as $key => $value) {
 
 }
 
+$summary = array('work' => 0, 'unwork' => 0, 'hits' => 0, 'attack_total' => 0, 'percent' => 0);
+$summary['total'] = count($site);
+foreach ($site as $key => $value) {
+	if($value['info']['work']) $summary['work']++;
+	else  $summary['unwork']++;
+	$summary['hits'] += $value['hits'];
+	$summary['attack_total'] += $value['attack_total'];
+}
+if($summary['hits'] != 0) $summary['percent'] = round($summary['attack_total'] / $summary['hits'] * 100, 2);
+if($summary['percent'] > 100) $summary['percent'] = 100;
+
+$fault = $constantModel->fault($site_list, $start_time, $stop_time, 0, 99999);
+foreach ($fault['list'] as $key => $value) {
+	$fault['list'][$key]['end_time'] = '尚未恢复';
+	if($value['status'] == 'slove'){
+		$fault['list'][$key]['end_time'] = date('Y-m-d H:i:s', strtotime($value['time']) + $value['keep_time']);
+	}
+	$fault['list'][$key]['msg'] = errorHeader($value['http_code']);
+}
+
+// print_r($fault);
 // print_r($site);
 
 require('./report/html.php');
