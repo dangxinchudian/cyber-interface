@@ -77,7 +77,7 @@ require('phpmailer/class.phpmailer.php');
 /*================路由表<开始>========================*/
 
 router('agent-init',function(){ require('./controller/other/agent-init.php'); });
-router('server-log=.',function(){ require('./controller/other/server-log.php'); });
+router('server-log',function(){ require('./controller/other/server-log.php'); });
 
 router('user-login', function(){ require('./controller/user/login.php'); });
 router('user-reg',function(){ require('./controller/user/reg.php'); });

@@ -16,6 +16,8 @@
 	// $stop_time = time();
 	
 	$siteModel = model('site');
+	$awsModel = model('aws');
+
 	if($site_id == 0) $info = $siteModel->get($user_id, 'user_id');
 	else $info = $siteModel->get($site_id);
 
@@ -27,6 +29,7 @@
 	$result = $attackModel->severity($info['site_id'], $start_time, $stop_time);
 	$ip_total = $attackModel->ip_count($info['site_id'], $start_time, $stop_time);
 	$total = $attackModel->total_count($info['site_id'], $start_time, $stop_time);
+	$http = $awsModel->summary($info['site_id'], $start_time, $stop_time);
 
 	$attack = array(
 		'EMERGENCY' => 0,
@@ -54,7 +57,12 @@
 		'rank' => $viewdata,
 		'summary' => array('ip' => $ip_total, 'total' => $total),
 		'site_id' => $info['site_id'],
+		'percent' => 0
 	);
+
+	if($http['hits'] != 0) $return['percent'] = round($total / $http['hits'] * 100, 2);
+	if($return['percent'] > 100) $return['percent'] = 100;
+	
 	json(true, $return);
 
 

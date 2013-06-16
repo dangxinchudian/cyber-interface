@@ -271,6 +271,7 @@ class server extends model{
 		return $this->db()->query($sql, 'row');		
 	}
 
+
 	public function listWatch($server_id){
 		$sql = "SELECT * FROM server_watch WHERE server_id = '{$server_id}' AND remove = 0";
 		return $this->db()->query($sql, 'array');	
