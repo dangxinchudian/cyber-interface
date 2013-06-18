@@ -99,6 +99,7 @@ router('summary-attack-location',function(){ require('./controller/summary/attac
 router('summary-constant-fault',function(){ require('./controller/summary/constant-fault.php'); });
 router('summary-report',function(){ require('./controller/summary/report.php'); });
 router('summary-constant',function(){ require('./controller/summary/constant.php'); });
+router('summary-site',function(){ require('./controller/summary/site.php'); });
 
 router('site-add',function(){ require('./controller/site/add.php'); });
 router('site-remove',function(){ require('./controller/site/remove.php'); });
