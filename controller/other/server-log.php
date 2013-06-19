@@ -210,7 +210,7 @@ switch ($json['type']) {
 				$out_speed = (int)(gmp_intval(gmp_add($value['out'], "-{$value['last']['out']}")) / $delta);
 				if($out_speed < 0) $out_speed = 0;
 				$sql .= " INSERT INTO {$table} (id, in_total, out_total, in_speed, out_speed, device_id, time) VALUES (uuid(), '{$value['in']}', '{$value['out']}', '{$in_speed}', '{$out_speed}', '{$key}', '{$time}'); ";
-				echo $in_speed;
+				// echo $in_speed;
 			}
 			$deviceArray[$key]['in_speed'] = (isset($in_speed)) ? $in_speed : 0;
 			$deviceArray[$key]['out_speed'] = (isset($out_speed)) ? $out_speed : 0;
