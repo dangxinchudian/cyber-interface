@@ -18,6 +18,23 @@
 	foreach ($result as $key => $value) {
 		$result[$key]['work'] = $constantModel->nowFault($value['site_id']);
 		$result[$key]['attack'] = $attackModel->total_count($value['site_id'], time() - 300, time());
+		if($value['server_id'] == 0) $result[$key]['server'] = array();
+		else{
+			$server = $serverModel->get($value['server_id']);
+			if(empty($server)) $result[$key]['server'] = array();
+			else{
+				$server['sys_descr'] = jdecode($server['sys_descr']);
+				$server['sys_name'] = jdecode($server['sys_name']);
+				$server['sys_uptime'] = jdecode($server['sys_uptime']);
+
+				$server['cpu'] = -1;
+				$server['in_speed'] = -1;
+				$server['out_speed'] = -1;
+				$server['memory'] = -1;
+				$server['disk'] = -1;
+
+			}
+		}
 	}
 
 	$alarm = array();
