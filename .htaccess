@@ -1,4 +1,4 @@
 RewriteEngine on
-RewriteCond $1 !^(index\.php|resource|agent.php|daemon)    
+RewriteCond $1 !^(index\.php|resource|agent.php|daemon|attack.php)    
 RewriteRule ^(.*)$ index.php?$1 [L]
 #防止其他页面报错
