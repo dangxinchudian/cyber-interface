@@ -59,7 +59,7 @@
 		function sql1($url, $node = 0){
 			global $nodeUrl;
 			$url = "{$nodeUrl[$node]}{$url}";
-			$url = "{$url}/?id=1%20and%201=1";
+			$url = "{$url}?id=1%20and%201=1";
 			httpHeader($url);
 			echo "and 1=1 攻击完成<br/>";
 		}
@@ -67,7 +67,7 @@
 		function sql2($url, $node = 0){
 			global $nodeUrl;
 			$url = "{$nodeUrl[$node]}{$url}";
-			$url = "{$url}/?id=exec(123)";
+			$url = "{$url}?id=exec(123)";
 			httpHeader($url);
 			echo "exec(123) 攻击完成<br/>";
 		}
@@ -75,10 +75,20 @@
 		function sql3($url, $node = 0){
 			global $nodeUrl;
 			$url = "{$nodeUrl[$node]}{$url}";
-			$url = "{$url}/?a=1'%20and%20select%20*%20from%201";
+			$url = "{$url}?a=1'%20and%20select%20*%20from%201";
 			httpHeader($url);
 			echo "' and select * from 1 攻击完成<br/>";
+
 		}
+
+		function tr($url, $node = 0){
+			global $nodeUrl;
+			$url = "{$nodeUrl[$node]}{$url}";
+			$url = "{$url}a=root.exe";
+			httpHeader($url);
+			echo " root.exe 攻击完成<br/>";
+		}
+
 
 		switch ($_POST['mode']) {
 			case 'XSS攻击1':
@@ -104,7 +114,11 @@
 			case '注入攻击3':
 				sql3($url, $location);
 				break;
-			
+	
+			case '木马攻击':
+				tr($url, $location);
+				break;
+
 			case '全部攻击':
 				xss1($url, $location);
 				xss2($url, $location);
@@ -112,6 +126,7 @@
 				sql1($url, $location);
 				sql2($url, $location);
 				sql3($url, $location);
+				tr($url, $location);
 				break;
 
 			default:
@@ -126,13 +141,14 @@
 ?>
 
 <form action="" method="POST">
-	攻击网址：<input type="text" style="width:600px;" name="url" value="<?php if(isset($url)) echo $url; ?>"/>
+	攻击网址：<input type="text" style="width:600px;" name="url" value="<?php if(isset($url)) echo $url; ?>"/><br/>
+	<span style="color:#AAA;">攻击网址举例：http://www.ispsp.net/news_list_0.html</span>
 	<hr />
 	攻击点:
 	<select name="location">
-		<option value="0" <?php if($location == 0) echo 'selected'; ?> >本地</option>
-		<option value="1" <?php if($location == 1) echo 'selected'; ?>>北京</option>
-		<option value="2" <?php if($location == 2) echo 'selected'; ?>>杭州</option>
+		<option value="0" <?php if(isset($location) && $location == 0) echo 'selected'; ?> >本地</option>
+		<option value="1" <?php if(isset($location) && $location == 1) echo 'selected'; ?>>北京</option>
+		<option value="2" <?php if(isset($location) && $location == 2) echo 'selected'; ?>>杭州</option>
 	</select>
 	<hr />
 	<input type="submit" value="XSS攻击1" name="mode"/>
@@ -141,5 +157,6 @@
 	<input type="submit" value="注入攻击1" name="mode"/>
 	<input type="submit" value="注入攻击2" name="mode"/>
 	<input type="submit" value="注入攻击3" name="mode"/>
+	<input type="submit" value="木马攻击" name="mode"/>
 	<input type="submit" value="全部攻击" name="mode"/>
 </form>

@@ -129,6 +129,7 @@ switch ($json['type']) {
 		$snmpDevice = array_intersect_key($snmpDevice, $deviceList);
 		foreach ($snmpDevice as $key => $value){
 			$snmpDevice[$key] = array();
+			if($value < 0) $value = 0;
 			$snmpDevice[$key]['load'] = $value;
 			$snmpDevice[$key]['device_id'] = $deviceList[$key]['server_device_id'];
 		}
@@ -205,7 +206,9 @@ switch ($json['type']) {
 			}else{
 				$delta = time() - $value['last']['time'];
 				$in_speed = (int)(gmp_intval(gmp_add($value['in'], "-{$value['last']['in']}")) / $delta);
+				if($in_speed < 0) $in_speed = 0;
 				$out_speed = (int)(gmp_intval(gmp_add($value['out'], "-{$value['last']['out']}")) / $delta);
+				if($out_speed < 0) $out_speed = 0;
 				$sql .= " INSERT INTO {$table} (id, in_total, out_total, in_speed, out_speed, device_id, time) VALUES (uuid(), '{$value['in']}', '{$value['out']}', '{$in_speed}', '{$out_speed}', '{$key}', '{$time}'); ";
 				echo $in_speed;
 			}
