@@ -78,6 +78,8 @@ require('phpmailer/class.phpmailer.php');
 
 router('agent-init',function(){ require('./controller/other/agent-init.php'); });
 router('server-log',function(){ require('./controller/other/server-log.php'); });
+router('auth-list',function(){ require('./controller/other/auth-list.php'); });
+router('user-list',function(){ require('./controller/other/user-list.php'); });
 
 router('user-login', function(){ require('./controller/user/login.php'); });
 router('user-reg',function(){ require('./controller/user/reg.php'); });

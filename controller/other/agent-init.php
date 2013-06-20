@@ -14,6 +14,11 @@ $incharge = filter('incharge', '/^[a-zA-Z0-9\x{4e00}-\x{9fa5}\,\s]{1,255}$/u', '
 
 $model = new model;
 $db = $model->db();
+$sql = "SELECT * FROM agent_info WHERE domain = '{$domain}' AND name = '{$name}'";
+$result = $db->query($sql,'row');
+if(!empty($result)) json(true, $result['host_token']);
+
+
 $host_token = 0;
 for ($i=0; $i < 15; $i++) { 
 	$random = random('num', 6);
