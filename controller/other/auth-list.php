@@ -1,14 +1,16 @@
 <?php
 
 	$user = model('user');
-	$user_id = $user->sessionCheck(function(){
-		if(isset($_POST['token']) && $_POST['token'] == 'cf05dcc346658899469f2d50311a09e4'){
 
-		}else json(false, '未登录');
-	});
-	$admin = $user->adminCheck();
-	if(isset($_POST['token']) && $_POST['token'] == 'cf05dcc346658899469f2d50311a09e4') $admin = true;
-	if(!$admin) json(false, '非管理员无权访问！');
+	if(isset($_POST['token']) && $_POST['token'] == 'cf05dcc346658899469f2d50311a09e4'){
+		$admin = true;
+	}else{
+		$user_id = $user->sessionCheck(function(){
+			json(false, '未登录');
+		});
+		$admin = $user->adminCheck();
+		if(!$admin) json(false, '非管理员无权访问！');
+	}
 
 	$model = new model;
 	$serverModel = model('server');
