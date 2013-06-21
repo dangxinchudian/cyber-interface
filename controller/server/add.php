@@ -13,7 +13,7 @@
 	$input_user_id = filter('user_id', '/^[0-9]{1,5}$/', '用户ID格式错误', true);
 
 	if($period < 60) $period = 60;
-	if($admin && $user_id ！= null) $user_id = $input_user_id;
+	if($admin && $input_user_id ！= null) $user_id = $input_user_id;
 	//$ip = '61.175.163.196';
 
 	$serverModel = model('server');
