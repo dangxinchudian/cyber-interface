@@ -16,7 +16,7 @@
 	if($user_id === false) json(false, '创建失败');
 
 	$user->login($user_id);
-	json(true, '创建成功');
+	json(true, $user_id);
 
 
 ?>
