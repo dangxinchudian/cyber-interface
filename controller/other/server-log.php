@@ -278,6 +278,9 @@ switch ($json['type']) {
 $db->query($sql, 'exec');
 $update = array('last_watch_time' => time(), 'last_watch_data' => jencode($dataArray));
 $db->update('server_watch', $update, "server_watch_id = '{$watch['server_watch_id']}'");
+
+$db->update('agent_info', array('last_receive_time' => time()), "host_token = '{$json['host_token']}'");
+
 json(true, '数据记录成功');
 
 
