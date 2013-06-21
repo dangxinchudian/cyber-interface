@@ -299,7 +299,7 @@ for(;;){
     $node = $db->query($sql, 'array');
 
     //url-list
-    $sql = "SELECT user_id,site_id,domain,path,port,last_watch_time,period FROM monitor.site WHERE last_watch_time + period < $time  AND remove = '0' AND constant_status = '1' LIMIT 0,30";
+    $sql = "SELECT user_id,site_id,domain,path,port,last_watch_time,period FROM monitor.site WHERE last_watch_time + period < $time  AND remove = '0' AND constant_status = '1' ORDER BY last_watch_time ASC LIMIT 0,30";
     $result = $db->query($sql, 'array');
 
     $urls = array();
