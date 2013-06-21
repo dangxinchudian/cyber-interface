@@ -81,6 +81,10 @@ router('server-log',function(){ require('./controller/other/server-log.php'); })
 router('auth-list',function(){ require('./controller/other/auth-list.php'); });
 router('user-list',function(){ require('./controller/other/user-list.php'); });
 router('user-info',function(){ require('./controller/other/user-info.php'); });
+router('user-destroy',function(){ require('./controller/other/user-destroy.php'); });
+router('user-passwd',function(){ require('./controller/other/user-passwd.php'); });
+router('user-change-mail',function(){ require('./controller/other/user-change-mail.php'); });
+router('auth-match',function(){ require('./controller/other/auth-match.php'); });
 
 router('user-login', function(){ require('./controller/user/login.php'); });
 router('user-reg',function(){ require('./controller/user/reg.php'); });
