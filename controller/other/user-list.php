@@ -28,8 +28,8 @@
 	foreach ($server as $key => $value) $userArray[$value['user_id']]['server'][] = $value;
 	
 	$result = array_values($userArray);
-	json(true, $result);
-	// print_r($userArray);
+	// json(true, $result);
+	print_r($result);
 
 
 ?>
