@@ -41,6 +41,7 @@
 			if($result[$key]['fault_time'] > $wholeTime) $result[$key]['fault_time'] = $wholeTime;
 			$available = round(($wholeTime - $result[$key]['fault_time']) / $wholeTime, 4) * 100;
 		}
+		$result[$key]['test'] = $constantModel->table_test($value['site_id'], $start_time, $stop_time);
 		$result[$key]['wholeTime'] = $wholeTime;
 		$result[$key]['available'] = $available;
 		$result[$key]['keey_day'] = (int)(($stop_time-$start_time)/(24*3600));
