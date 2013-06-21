@@ -8,6 +8,10 @@
 	if(!$admin) json(false, '非管理员无权访问！');
 
 	$user_id = filter('user_id', '/^[0-9]{1,9}$/', 'userID错误');
+	// $user_id = 49;
+
+	$info = $user->get($user_id);
+	if(empty($info)) json(false, 'userID不存在');
 
 	$siteModel = model('site');
 	$serverModel = model('server');
@@ -24,7 +28,7 @@
 	}
 
 	$sql = "DELETE FROM user WHERE user_id='{$user_id}'";
-	$serverModel->db()->query($sql);
+	$serverModel->db()->query($sql, 'exec');
 
 	json(true, '销毁账户成功！');
 
