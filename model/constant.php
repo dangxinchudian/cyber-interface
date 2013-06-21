@@ -54,8 +54,8 @@ class constant extends model{
 		$sql = "SELECT sum(keep_time) FROM constant_fault WHERE 
 			(
 				(time >= '{$start_time}' AND time <= '{$stop_time}') OR 
-				(time <= '{$start_time}' AND time + keep_time >= '{$start_time}') OR 
-				(time <= '{$stop_time}' AND time + keep_time >= '{$stop_time}') 
+				(time <= '{$start_time}' AND DATE_ADD(time, INTERVAL keep_time SECOND) >= '{$start_time}') OR 
+				(time <= '{$stop_time}' AND DATE_ADD(time, INTERVAL keep_time SECOND) >= '{$stop_time}') 
 			)AND site_id = '{$site_id}'";
 		$result = $this->db()->query($sql, 'row');
 		if(empty($result['sum(keep_time)'])) return 0;
