@@ -13,6 +13,7 @@ require('../phpmailer/class.phpmailer.php');
 }*/
 $callback = function($data, $info, $self){
 	global $db;
+	global $node;
 	$database = "mosite_{$self['site_id']}";
 	$time = date('Y-m-d H:i:s');
 	if($self['node_id'] != 0){
@@ -25,13 +26,32 @@ $callback = function($data, $info, $self){
 			echo "{$info['url']} 执行插入前复查\n";
 
 			//再次检查
-			for($i = 0; $i < 2; $i++){
-				$result = httpHeader($self['url'], $self['port']);
-				echo "插入前复查结果为{$result['code']}[{$result['time']}]\n";
-				if($result['code'] == 200) break;      //若为200直接退出
+			// for($i = 0; $i < 2; $i++){
+			// 	$result = httpHeader($self['url'], $self['port']);
+			// 	echo "插入前复查结果为{$result['code']}[{$result['time']}]\n";
+			// 	if($result['code'] == 200) break;      //若为200直接退出
+			// }
+
+			//再次通过其他节点进行复查
+			foreach ($node as $key => $nodevalue) {
+				$url = "{$nodevalue['url']}?url={$self['url']}&port={$self['port']}";
+				$data = web($url);
+				$remote = json_decode($data, true);
+				if(!$remote){
+					echo "连接不上外网，结果被抛弃\n";
+					return false;
+				}
+
+				$time = $remote['time'];
+				$info = array_merge($info, $remote);
+				echo "插入前复查结果为{$info['http_code']}[{$info['time']}]\n";
+				if($info['http_code'] == 200) break;
 			}
 
-			$info = array_merge($info, $result['info']);
+			// $url = "";
+			// httpHeader($url);
+
+			// $info = array_merge($info, $result['info']);
 		}
 	}
 	// echo "[{$self['node_id']}]{$info['url']}:{$info['total_time']}\n";
