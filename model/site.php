@@ -215,6 +215,35 @@ class site extends model{
 		return $result['count(site_id)'];
 	}
 
+	public function partitionSql(){		//生成分区表的sql语句
+		$sql = 'PARTITION BY RANGE (TO_DAYS (time))(';
+		$year = date('Y');
+		$month = date('m');
+		//生成之后6个月的分区
+		$date = array();
+		$sqlArray = array();
+		for ($i = 0; $i < 6; $i++) { 
+			if($month + $i > 12){
+				$date[] = array(
+					'year' => $year + 1,
+					'month' => str_pad($month + $i - 12, 2 ,'0', STR_PAD_LEFT),
+				);
+			}else{
+				$date[] = array(
+					'year' => $year,
+					'month' => str_pad($month + $i, 2 ,'0', STR_PAD_LEFT),
+				);
+			}
+		}
+		for ($i = 1; $i < 6; $i++) {
+			$p = $i - 1;
+			$sqlArray[] = "PARTITION p{$date[$p]['year']}{$date[$p]['month']} VALUES LESS THAN (TO_DAYS('{$date[$i]['year']}-{$date[$i]['month']}-01')) ENGINE = ARCHIVE";
+		}
+		$sqlArray[] = "PARTITION pall VALUES LESS THAN MAXVALUE ENGINE = ARCHIVE";
+		$sql .= implode(',', $sqlArray);
+		$sql .= ')';
+		return $sql;
+	}
 
 
 }
