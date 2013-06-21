@@ -14,6 +14,8 @@
 	$siteModel = model('site');
 	$sites = array();
 	$siteList = $siteModel->getUser($user_id);
+	if(empty($siteList)) json(false, '暂未添加站点');
+	
 	foreach ($siteList as $key => $value) $sites[] = $value['site_id'];
 	$attackDaily = $attackModel->hour($sites, $start_time, $stop_time);
 

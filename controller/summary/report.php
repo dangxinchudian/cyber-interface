@@ -16,6 +16,8 @@
 
 	//监控网站数
 	$siteList = $siteModel->getUser($user_id);
+	if(empty($siteList)) json(false, '暂未添加站点');
+	
 	$site_count = count($siteList);
 
 	//受攻击数量
