@@ -1,6 +1,7 @@
 <?php
 
 	$user = model('user');
+	print_r($_POST);
 
 	if(isset($_POST['token']) && $_POST['token'] == 'cf05dcc346658899469f2d50311a09e4'){
 		$admin = true;
