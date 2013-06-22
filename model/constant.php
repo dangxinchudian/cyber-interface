@@ -62,17 +62,17 @@ class constant extends model{
 		return $result['sum(keep_time)'];	
 	}
 
-	// public function table_test($site_id, $start_time, $stop_time){
-	// 	$start_time = date('Y-m-d H:i:s', $start_time);
-	// 	$stop_time = date('Y-m-d H:i:s', $stop_time);
-	// 	$sql = "SELECT sum(keep_time) FROM constant_fault WHERE 
-	// 		(
-	// 			(time >= '{$start_time}' AND time <= '{$stop_time}') OR 
-	// 			(time <= '{$start_time}' AND time + keep_time >= '{$start_time}') OR 
-	// 			(time <= '{$stop_time}' AND time + keep_time >= '{$stop_time}') 
-	// 		)AND site_id = '{$site_id}'";
-	// 	return $sql;		
-	// }
+	public function table_test($site_id, $start_time, $stop_time){
+		$start_time = date('Y-m-d H:i:s', $start_time);
+		$stop_time = date('Y-m-d H:i:s', $stop_time);
+		$sql = "SELECT sum(keep_time) FROM constant_fault WHERE 
+			(
+				(time >= '{$start_time}' AND time <= '{$stop_time}') OR 
+				(time <= '{$start_time}' AND time + keep_time >= '{$start_time}') OR 
+				(time <= '{$stop_time}' AND time + keep_time >= '{$stop_time}') 
+			)AND site_id = '{$site_id}'";
+		return $sql;		
+	}
 
 	// public function available_time($site_id, $start_time, $stop_time){
 		
