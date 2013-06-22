@@ -115,9 +115,9 @@ class constant extends model{
 			$site = " site_id = '{$site_id}'";
 		}
 		$sql = "SELECT * FROM constant_fault WHERE {$site} AND time >= '{$start_time}' AND time <= '{$stop_time}' ORDER BY time DESC LIMIT {$start},{$limit}";
-		echo $sql;
+		// echo $sql;
 		$result['list'] = $this->db()->query($sql, 'array');
-		$sql = "SELECT count(id) FROM constant_fault WHERE site_id = '{$site_id}' AND time >= '{$start_time}' AND time <= '{$stop_time}'";
+		$sql = "SELECT count(id) FROM constant_fault WHERE {$site} AND time >= '{$start_time}' AND time <= '{$stop_time}'";
 		$dbResult = $this->db()->query($sql, 'row');
 		$result['total'] = $dbResult['count(id)'];
 		return $result;
