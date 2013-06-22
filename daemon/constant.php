@@ -145,7 +145,10 @@ $callback = function($data, $info, $self){
 			}else{      //持续故障时间累加
 				echo "{$info['url']} 持续故障\n";
 
-				$sql = "UPDATE constant_fault SET keep_time = keep_time + {$self['period']} WHERE id = '{$fault['id']}'";
+				$start_t = strtotime($fault['time']);
+				$keep_time = time() - $start_t;
+				// $sql = "UPDATE constant_fault SET keep_time = keep_time + {$self['period']} WHERE id = '{$fault['id']}'";
+				$sql = "UPDATE constant_fault SET keep_time = '{$keep_time}' WHERE id = '{$fault['id']}'";
 				$db->query($sql, 'exec');
 			}
 
