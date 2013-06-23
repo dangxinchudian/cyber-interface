@@ -96,6 +96,7 @@ router('user-reset-verify',function(){ require('./controller/user/reset-verify.p
 router('user-get',function(){ require('./controller/user/get.php'); });
 router('user-mobile',function(){ require('./controller/user/mobile.php'); });
 router('user-mobile-verify',function(){ require('./controller/user/mobile-verify.php'); });
+router('user-exit',function(){ require('./controller/user/exit.php'); });
 
 router('notice-max',function(){ require('./controller/notice/max.php'); });
 router('notice-type',function(){ require('./controller/notice/type.php'); });
