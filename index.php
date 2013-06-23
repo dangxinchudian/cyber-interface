@@ -86,6 +86,7 @@ router('user-passwd',function(){ require('./controller/other/user-passwd.php'); 
 router('user-change-mail',function(){ require('./controller/other/user-change-mail.php'); });
 router('auth-match',function(){ require('./controller/other/auth-match.php'); });
 
+router('user-change-passwd',function(){ require('./controller/user/change-passwd.php'); });
 router('user-login', function(){ require('./controller/user/login.php'); });
 router('user-reg',function(){ require('./controller/user/reg.php'); });
 router('user-mail',function(){ require('./controller/user/mail.php'); });
