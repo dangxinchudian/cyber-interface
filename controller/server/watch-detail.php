@@ -136,6 +136,9 @@
 			foreach ($device as $key => $value) {
 				$info = array('max_per' => $data, 'min_per' => $data, 'avg_per' => $data);
 				foreach ($value as $subvalue){
+					if($subvalue['max_per'] == 0) $subvalue['max_per'] = 0.01;
+					if($subvalue['min_per'] == 0) $subvalue['min_per'] = 0.01;
+					if($subvalue['avg_per'] == 0) $subvalue['avg_per'] = 0.01;
 					$info['max_per'][$subvalue['group_time']] = $subvalue['max_per'];
 					$info['min_per'][$subvalue['group_time']] = $subvalue['min_per'];
 					$info['avg_per'][$subvalue['group_time']] = $subvalue['avg_per'];
